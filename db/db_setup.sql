@@ -1,7 +1,3 @@
--- Drop the database if it exists
-DROP DATABASE IF EXISTS testdb;
-
--- Create the database
 CREATE DATABASE testdb;
 
 -- Use the database
