@@ -3,17 +3,21 @@ services:
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
+    container_name: webserver-multi
     ports:
       - "8080:80"
     volumes:
       - .:/var/www/html
     depends_on:
       - db
+    networks:
+      - app-network
 
   db:
     build:
       context: ./db
       dockerfile: Dockerfile
+    container_name: db-container
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
@@ -21,7 +25,14 @@ services:
       MYSQL_USER: labuser
       MYSQL_PASSWORD: labpass
     volumes:
-      - db_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
-  db_data:
+  mariadb_data:
+    external: true
